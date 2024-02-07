@@ -1,0 +1,67 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"title": "customProductAttributesMixin",
+	"description": "Schema for a mixin with custom product attributes used by the process of creating a product.",
+	"type": "object",
+	"properties": {
+		"grape": {
+			"type": ["array", "null"],
+			"items": {
+				"type": "object",
+				"properties": {
+					"language": {
+						"type": ["string", "null"]
+					},
+					"value": {
+						"type": ["string", "null"]
+					}
+				}
+			}
+		},
+		"country": {
+			"type": ["array", "null"],
+			"items": {
+				"type": "object",
+				"properties": {
+					"language": {
+						"type": ["string", "null"]
+					},
+					"value": {
+						"type": ["string", "null"]
+					}
+				}
+			}
+		},
+		"region": {
+			"type": ["array", "null"],
+			"items": {
+				"type": "object",
+				"properties": {
+					"language": {
+						"type": ["string", "null"]
+					},
+					"value": {
+						"type": ["string", "null"]
+					}
+				}
+			}
+		},
+		"winery": {
+			"type": ["array", "null"],
+			"items": {
+				"type": "object",
+				"properties": {
+					"language": {
+						"type": ["string", "null"]
+					},
+					"value": {
+						"type": ["string", "null"]
+					}
+				}
+			}
+		},
+		"vintage": {
+			"type": "string"
+		}
+	}
+}
