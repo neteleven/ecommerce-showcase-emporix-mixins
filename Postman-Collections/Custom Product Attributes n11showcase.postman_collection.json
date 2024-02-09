@@ -1,0 +1,47 @@
+{
+	"info": {
+		"_postman_id": "fc616463-85b1-4473-a3c5-b5afbb6603b4",
+		"name": "Custom Product Attributes n11showcase",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "21220751"
+	},
+	"item": [
+		{
+			"name": "Creating a schema",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Language",
+						"value": "*",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": \"custom_product_attributes_n11\",\n    \"name\": {\n        \"de\": \"Benutzerspezifische Produkteigenschaften\",\n        \"en\": \"Custom Product Attributes\"\n    },\n    \"types\": [\n        \"PRODUCT\"\n    ],\n    \"attributes\": [\n        {\n            \"key\": \"grape_n11showcase\",\n            \"name\": {\n                \"de\": \"Weintraube\",\n                \"en\": \"Grape\"\n            },\n            \"description\": {\n                \"de\": \"Die Traubensorte des Weines.\",\n                \"en\": \"The grape variety of the wine.\"\n            },\n            \"type\": \"TEXT\",\n            \"metadata\": {\n                \"readOnly\": false,\n                \"localized\": true,\n                \"required\": false\n            }\n        },\n        {\n            \"key\": \"country_n11showcase\",\n            \"name\": {\n                \"de\": \"Herkunftsland\",\n                \"en\": \"Country of origin\"\n            },\n            \"description\": {\n                \"de\": \"Das Land, aus dem der Wein stammt.\",\n                \"en\": \"The land where the wine comes from.\"\n            },\n            \"type\": \"TEXT\",\n            \"metadata\": {\n                \"readOnly\": false,\n                \"localized\": true,\n                \"required\": false\n            }\n        },\n        {\n            \"key\": \"region_n11showcase\",\n            \"name\": {\n                \"de\": \"Weinanbaugebiet\",\n                \"en\": \"Wine growing region\"\n            },\n            \"description\": {\n                \"de\": \"Die Region, in der ein Wein angebaut wird.\",\n                \"en\": \"The region in which a wine is grown.\"\n            },\n            \"type\": \"TEXT\",\n            \"metadata\": {\n                \"readOnly\": false,\n                \"localized\": true,\n                \"required\": false\n            }\n        },\n        {\n            \"key\": \"winery_n11showcase\",\n            \"name\": {\n                \"de\": \"Weingut\",\n                \"en\": \"Winery\"\n            },\n            \"description\": {\n                \"de\": \"Der Hersteller des Weines.\",\n                \"en\": \"The producer of the wine.\"\n            },\n            \"type\": \"TEXT\",\n            \"metadata\": {\n                \"readOnly\": false,\n                \"localized\": true,\n                \"required\": false\n            }\n        },\n        {\n            \"key\": \"vintage_n11showcase\",\n            \"name\": {\n                \"de\": \"Jahrgang\",\n                \"en\": \"Vintage\"\n            },\n            \"description\": {\n                \"de\": \"Das Jahr, in dem der Wein hergestellt wurde.\",\n                \"en\": \"The year in which the wine was produced.\"\n            },\n            \"type\": \"TEXT\",\n            \"metadata\": {\n                \"readOnly\": false,\n                \"localized\": false,\n                \"required\": false\n            }\n        }\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/schema/{{tenant}}/schemas",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"schema",
+						"{{tenant}}",
+						"schemas"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
