@@ -1,0 +1,47 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+
+	"title": "customProductAttributesMixin",
+	"description": "Schema for a mixin with custom product attributes used by the process of creating a product.",
+	
+	"type": "object",
+	"properties": {
+		"grape": {"type": "string"},	
+		"country": {"type": "string"},	
+		"region": {"type": "string"},	
+		"winery": {"type": "string"},	
+		"year": {"type": "string"},
+		"color": {"type": "string"},
+		"flavor": {"type": "string"},
+		"winestyle": {			
+			"type": ["array", "null"],
+      			"items": {
+        			"type": "string"
+      			},
+			"description": "Array with the values for the style of wine e.g. fruity,fresh"
+		},
+		"tasteslike": {			
+			"type": ["array", "null"],
+      			"items": {
+        			"type": "string"
+      			},
+			"description": "Array with the values according to which the wine tastes like"
+		},
+		"pairswellwith": {			
+			"type": ["array", "null"],
+      			"items": {
+        			"type": "string"
+      			},
+			"description": "Array with the values to which the wine fits to drink"
+		},
+		"alcoholcontent": {"type": "string"},
+		"residualsugar": {"type": "string"},
+		"acidity": {"type": "string"},
+		"drinkingtemperature": {"type": "string"},
+		"qualitylevel": {"type": "string"},
+		"maturation": {"type": "string"},
+		"closuretype": {"type": "string"},
+		"drinkableuntil": {"type": "string"},
+		"awards": {"type": "string"}
+	}
+}
