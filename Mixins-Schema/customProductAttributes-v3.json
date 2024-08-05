@@ -1,0 +1,44 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"title": "customProductAttributesMixin",
+	"description": "Schema for a mixin with custom product attributes used by the process of creating a product.",
+	"type": "object",
+	"properties": {
+		"grape": {
+			"type": "array",
+			"_type": "string",
+			"description": "The grape variety of the wine",
+			"items": {
+				"$ref": "https://raw.githubusercontent.com/neteleven/ecommerce-showcase-emporix-mixins/feature/languages-de-and-en-for-mixin-schema/localizedValues-v1.json"
+			}
+		},
+		"country": {
+			"type": "array",
+			"_type": "string",
+			"description": "The land where the wine comes from.",
+			"items": {
+				"$ref": "https://raw.githubusercontent.com/neteleven/ecommerce-showcase-emporix-mixins/feature/languages-de-and-en-for-mixin-schema/localizedValues-v1.json"
+			}
+		},
+		"region": {
+			"type": "array",
+			"_type": "string",
+			"description": "The area from which a wine originates.",
+			"items": {
+				"$ref": "https://raw.githubusercontent.com/neteleven/ecommerce-showcase-emporix-mixins/feature/languages-de-and-en-for-mixin-schema/localizedValues-v1.json"
+			}
+		},
+		"winery": {
+			"type": "array",
+			"_type": "string",
+			"description": "The producer of the wine.",
+			"items": {
+				"$ref": "https://raw.githubusercontent.com/neteleven/ecommerce-showcase-emporix-mixins/feature/languages-de-and-en-for-mixin-schema/localizedValues-v1.json"
+			}
+		},
+		"vintage": {
+			"type": "string",
+			"description": "The year in which the wine was produced."
+		}
+	}
+}

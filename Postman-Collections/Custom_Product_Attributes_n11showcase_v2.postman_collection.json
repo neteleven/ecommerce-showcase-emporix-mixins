@@ -1,0 +1,265 @@
+{
+	"info": {
+		"_postman_id": "053e0c84-79ef-4848-82ec-779f0f188252",
+		"name": "Custom Product Attributes n11showcase",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "21220751"
+	},
+	"item": [
+		{
+			"name": "Requesting an anonymous token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var data = pm.response.json();",
+							"pm.environment.set(\"anonymous_token\", data.access_token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/customerlogin/auth/anonymous/login?tenant={{tenant}}&client_id={{storefront_api_client_id}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"customerlogin",
+						"auth",
+						"anonymous",
+						"login"
+					],
+					"query": [
+						{
+							"key": "tenant",
+							"value": "{{tenant}}"
+						},
+						{
+							"key": "client_id",
+							"value": "{{storefront_api_client_id}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Retrieving a schema",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{anonymous_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept-Language",
+						"value": "*",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseURL}}/schema/{{tenant}}/schemas/:id",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"schema",
+						"{{tenant}}",
+						"schemas",
+						":id"
+					],
+					"query": [
+						{
+							"key": "version",
+							"value": "1",
+							"disabled": true
+						}
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "custom_product_attributes_n11"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Schema service access token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var data = pm.response.json();",
+							"pm.collectionVariables.set(\"schema_service_access_token\", data.access_token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "{{grant_type}}",
+							"type": "text"
+						},
+						{
+							"key": "client_id",
+							"value": "{{emporix_api_client_id}}",
+							"type": "text"
+						},
+						{
+							"key": "client_secret",
+							"value": "{{emporix_api_secret}}",
+							"type": "text"
+						},
+						{
+							"key": "scope",
+							"value": "schema.schema_manage schema.schema_read",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{baseURL}}/oauth/token",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"oauth",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Creating wine details attributes [arrays as strings]",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"The Mixin schema for the custom wine details attributes has been successfully created. Status code is 201\", () => {",
+							"    pm.response.to.have.status(201);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{schema_service_access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Language",
+						"value": "*",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": \"custom_product_attributes_n11\",\n    \"name\": {\n        \"de\": \"Weineigenschaften\",\n        \"en\": \"Wine characteristics\"\n    },\n    \"types\": [\n        \"PRODUCT\"\n    ],\n    \"attributes\": [\n        {\n            \"key\": \"grape_n11showcase\",\n            \"name\": {\n                \"de\": \"Rebsorte\",\n                \"en\": \"Grape\"\n            },\n            \"description\": {\n                \"de\": \"Die Rebsorte der Trauben zur Herstellung des Weins.\",\n                \"en\": \"The grape variety of the grapes used to make the wine.\"\n            },\n            \"type\": \"TEXT\",\n            \"metadata\": {\n                \"readOnly\": false,\n                \"localized\": true,\n                \"required\": false,\n                \"nullable\": true\n            }\n        },\n        {\n            \"key\": \"country_n11showcase\",\n            \"name\": {\n                \"de\": \"Herkunftsland\",\n                \"en\": \"Country of origin\"\n            },\n            \"description\": {\n                \"de\": \"Das Land, aus dem der Wein stammt.\",\n                \"en\": \"The land where the wine comes from.\"\n            },\n            \"type\": \"TEXT\",\n            \"metadata\": {\n                \"readOnly\": false,\n                \"localized\": true,\n                \"required\": false,\n                \"nullable\": true\n            }\n        },\n        {\n            \"key\": \"region_n11showcase\",\n            \"name\": {\n                \"de\": \"Weinbaugebiet\",\n                \"en\": \"Wine growing region\"\n            },\n            \"description\": {\n                \"de\": \"Die Region, in der der Wein angebaut wird.\",\n                \"en\": \"The region in which the wine is grown.\"\n            },\n            \"type\": \"TEXT\",\n            \"metadata\": {\n                \"readOnly\": false,\n                \"localized\": true,\n                \"required\": false,\n                \"nullable\": true\n            }\n        },\n        {\n            \"key\": \"winery_n11showcase\",\n            \"name\": {\n                \"de\": \"Weingut\",\n                \"en\": \"Winery\"\n            },\n            \"description\": {\n                \"de\": \"Der Hersteller des Weines.\",\n                \"en\": \"The producer of the wine.\"\n            },\n            \"type\": \"TEXT\",\n            \"metadata\": {\n                \"readOnly\": false,\n                \"localized\": true,\n                \"required\": false,\n                \"nullable\": true\n            }\n        },\n        {\n            \"key\": \"vintage_n11showcase\",\n            \"name\": {\n                \"de\": \"Jahrgang\",\n                \"en\": \"Vintage\"\n            },\n            \"description\": {\n                \"de\": \"Das Jahr, in dem der Wein hergestellt wurde.\",\n                \"en\": \"The year in which the wine was produced.\"\n            },\n            \"type\": \"TEXT\",\n            \"metadata\": {\n                \"readOnly\": false,\n                \"localized\": false,\n                \"required\": false,\n                \"nullable\": true\n            }\n        },\n        {\n            \"key\": \"color_n11showcase\",\n            \"name\": {\n                \"de\": \"Weinfarbe\",\n                \"en\": \"Wine colour\"\n            },\n            \"description\": {\n                \"de\": \"Die Farbe des Weines.\",\n                \"en\": \"The colour of the wine.\"\n            },\n            \"type\": \"TEXT\",\n            \"metadata\": {\n                \"readOnly\": false,\n                \"localized\": true,\n                \"required\": false,\n                \"nullable\": true\n            }\n        },\n        {\n            \"key\": \"flavor_n11showcase\",\n            \"name\": {\n                \"de\": \"Weingeschmack\",\n                \"en\": \"Wine flavor\"\n            },\n            \"description\": {\n                \"de\": \"Der Geschmacksstil des Weins.\",\n                \"en\": \"The flavor style of the wine.\"\n            },\n            \"type\": \"TEXT\",\n            \"metadata\": {\n                \"readOnly\": false,\n                \"localized\": true,\n                \"required\": false,\n                \"nullable\": true\n            }\n        },\n        {\n            \"key\": \"winestyle_n11showcase\",\n            \"name\": {\n                \"de\": \"Weinstil\",\n                \"en\": \"Wine style\"\n            },\n            \"description\": {\n                \"de\": \"Assoziationen, mit denen der Wein in Verbindung gebracht wird.\",\n                \"en\": \"Associations with which the wine is connected.\"\n            },\n            \"type\": \"TEXT\",\n            \"metadata\": {\n                \"readOnly\": false,\n                \"localized\": true,\n                \"required\": false,\n                \"nullable\": true\n            }\n        },\n        {\n            \"key\": \"tasteslike_n11showcase\",\n            \"name\": {\n                \"de\": \"Wein schmeckt nach\",\n                \"en\": \"Wine tastes like\"\n            },\n            \"description\": {\n                \"de\": \"Vergleichbare Geschmacksnoten, die durch den Wein hervorgerufen werden.\",\n                \"en\": \"Comparable flavours evoked by the wine.\"\n            },\n            \"type\": \"TEXT\",\n            \"metadata\": {\n                \"readOnly\": false,\n                \"localized\": true,\n                \"required\": false,\n                \"nullable\": true\n            }\n        },\n        {\n            \"key\": \"pairswellwith_n11showcase\",\n            \"name\": {\n                \"de\": \"Passt gut zu\",\n                \"en\": \"Pairs well with\"\n            },\n            \"description\": {\n                \"de\": \"Gerichte, mit denen man den Wein gut trinken kann.\",\n                \"en\": \"Dishes that go well with the wine.\"\n            },\n            \"type\": \"TEXT\",\n            \"metadata\": {\n                \"readOnly\": false,\n                \"localized\": true,\n                \"required\": false,\n                \"nullable\": true\n            }\n        },\n        {\n            \"key\": \"alcoholcontent_n11showcase\",\n            \"name\": {\n                \"de\": \"Alkoholgehalt\",\n                \"en\": \"Alcohol content\"\n            },\n            \"description\": {\n                \"de\": \"Der Alkoholgehalt des Weines.\",\n                \"en\": \"The alcohol content of the wine.\"\n            },\n            \"type\": \"TEXT\",\n            \"metadata\": {\n                \"readOnly\": false,\n                \"localized\": false,\n                \"required\": false,\n                \"nullable\": true\n            }\n        },\n        {\n            \"key\": \"residualsugar_n11showcase\",\n            \"name\": {\n                \"de\": \"Restzucker\",\n                \"en\": \"Residual sugar\"\n            },\n            \"description\": {\n                \"de\": \"Der Restzucker, der im Wein enthalten ist.\",\n                \"en\": \"The residual sugar contained in the wine.\"\n            },\n            \"type\": \"TEXT\",\n            \"metadata\": {\n                \"readOnly\": false,\n                \"localized\": false,\n                \"required\": false,\n                \"nullable\": true\n            }\n        },\n        {\n            \"key\": \"acidity_n11showcase\",\n            \"name\": {\n                \"de\": \"Säuregehalt\",\n                \"en\": \"acidity\"\n            },\n            \"description\": {\n                \"de\": \"Der Säuregehalt des Weines.\",\n                \"en\": \"The acidity of the wine.\"\n            },\n            \"type\": \"TEXT\",\n            \"metadata\": {\n                \"readOnly\": false,\n                \"localized\": false,\n                \"required\": false,\n                \"nullable\": true\n            }\n        },\n        {\n            \"key\": \"drinkingtemperature_n11showcase\",\n            \"name\": {\n                \"de\": \"Drinktemperatur\",\n                \"en\": \"Drinking temperature\"\n            },\n            \"description\": {\n                \"de\": \"Die Temperatur zur optimalen Geschmacksentfaltung des Weins.\",\n                \"en\": \"The temperature for optimum flavor development of the wine.\"\n            },\n            \"type\": \"TEXT\",\n            \"metadata\": {\n                \"readOnly\": false,\n                \"localized\": false,\n                \"required\": false,\n                \"nullable\": true\n            }\n        },\n        {\n            \"key\": \"qualitylevel_n11showcase\",\n            \"name\": {\n                \"de\": \"Qualitätsniveau\",\n                \"en\": \"Quality level\"\n            },\n            \"description\": {\n                \"de\": \"Das Qualitätsniveau zur Einstufung des Weins.\",\n                \"en\": \"The quality level for categorising the wine.\"\n            },\n            \"type\": \"TEXT\",\n            \"metadata\": {\n                \"readOnly\": false,\n                \"localized\": false,\n                \"required\": false,\n                \"nullable\": true\n            }\n        },\n        {\n            \"key\": \"maturation_n11showcase\",\n            \"name\": {\n                \"de\": \"Reifungsprozess\",\n                \"en\": \"Maturation\"\n            },\n            \"description\": {\n                \"de\": \"Die Art und Weise, auf der der Wein gereift ist.\",\n                \"en\": \"The way in which the wine has matured.\"\n            },\n            \"type\": \"TEXT\",\n            \"metadata\": {\n                \"readOnly\": false,\n                \"localized\": true,\n                \"required\": false,\n                \"nullable\": true\n            }\n        },\n        {\n            \"key\": \"closuretype_n11showcase\",\n            \"name\": {\n                \"de\": \"Verschlussart\",\n                \"en\": \"Closure type\"\n            },\n            \"description\": {\n                \"de\": \"Die Art, wie der Wein verschlossen ist.\",\n                \"en\": \"The way the wine is sealed.\"\n            },\n            \"type\": \"TEXT\",\n            \"metadata\": {\n                \"readOnly\": false,\n                \"localized\": true,\n                \"required\": false,\n                \"nullable\": true\n            }\n        },\n        {\n            \"key\": \"drinkableuntil_n11showcase\",\n            \"name\": {\n                \"de\": \"Genießbar bis\",\n                \"en\": \"Drinkable until\"\n            },\n            \"description\": {\n                \"de\": \"Das Mindesthaltbarkeitsdatum des Weins.\",\n                \"en\": \"The best before date of the wine.\"\n            },\n            \"type\": \"TEXT\",\n            \"metadata\": {\n                \"readOnly\": false,\n                \"localized\": true,\n                \"required\": false,\n                \"nullable\": true\n            }\n        },\n        {\n            \"key\": \"awards_n11showcase\",\n            \"name\": {\n                \"de\": \"Auszeichnungen\",\n                \"en\": \"Awards\"\n            },\n            \"description\": {\n                \"de\": \"Die Auszeichnungen, die dem Wein verliehen wurden.\",\n                \"en\": \"The awards that have been bestowed on the wine.\"\n            },\n            \"type\": \"TEXT\",\n            \"metadata\": {\n                \"readOnly\": false,\n                \"localized\": true,\n                \"required\": false,\n                \"nullable\": true\n            }\n        }\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/schema/{{tenant}}/schemas",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"schema",
+						"{{tenant}}",
+						"schemas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Updating a schema",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{schema_service_access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Language",
+						"value": "*",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": \"custom_product_attributes_n11\",\n    \"name\": {\n        \"de\": \"Weineigenschaften\",\n        \"en\": \"Wine characteristics\"\n    },\n    \"types\": [\n        \"PRODUCT\"\n    ],\n    \"attributes\": [\n        {\n            \"key\": \"grape_n11showcase\",\n            \"name\": {\n                \"de\": \"Rebsorte\",\n                \"en\": \"Grape\"\n            },\n            \"description\": {\n                \"de\": \"Die Rebsorte der Trauben zur Herstellung des Weins.\",\n                \"en\": \"The grape variety of the grapes used to make the wine.\"\n            },\n            \"type\": \"TEXT\",\n            \"metadata\": {\n                \"readOnly\": false,\n                \"localized\": true,\n                \"required\": false,\n                \"nullable\": true\n            }\n        },\n        {\n            \"key\": \"country_n11showcase\",\n            \"name\": {\n                \"de\": \"Herkunftsland\",\n                \"en\": \"Country of origin\"\n            },\n            \"description\": {\n                \"de\": \"Das Land, aus dem der Wein stammt.\",\n                \"en\": \"The land where the wine comes from.\"\n            },\n            \"type\": \"TEXT\",\n            \"metadata\": {\n                \"readOnly\": false,\n                \"localized\": true,\n                \"required\": false,\n                \"nullable\": true\n            }\n        },\n        {\n            \"key\": \"region_n11showcase\",\n            \"name\": {\n                \"de\": \"Weinbaugebiet\",\n                \"en\": \"Wine growing region\"\n            },\n            \"description\": {\n                \"de\": \"Die Region, in der der Wein angebaut wird.\",\n                \"en\": \"The region in which the wine is grown.\"\n            },\n            \"type\": \"TEXT\",\n            \"metadata\": {\n                \"readOnly\": false,\n                \"localized\": true,\n                \"required\": false,\n                \"nullable\": true\n            }\n        },\n        {\n            \"key\": \"winery_n11showcase\",\n            \"name\": {\n                \"de\": \"Weingut\",\n                \"en\": \"Winery\"\n            },\n            \"description\": {\n                \"de\": \"Der Hersteller des Weines.\",\n                \"en\": \"The producer of the wine.\"\n            },\n            \"type\": \"TEXT\",\n            \"metadata\": {\n                \"readOnly\": false,\n                \"localized\": true,\n                \"required\": false,\n                \"nullable\": true\n            }\n        },\n        {\n            \"key\": \"vintage_n11showcase\",\n            \"name\": {\n                \"de\": \"Jahrgang\",\n                \"en\": \"Vintage\"\n            },\n            \"description\": {\n                \"de\": \"Das Jahr, in dem der Wein hergestellt wurde.\",\n                \"en\": \"The year in which the wine was produced.\"\n            },\n            \"type\": \"TEXT\",\n            \"metadata\": {\n                \"readOnly\": false,\n                \"localized\": false,\n                \"required\": false,\n                \"nullable\": true\n            }\n        },\n        {\n            \"key\": \"color_n11showcase\",\n            \"name\": {\n                \"de\": \"Weinfarbe\",\n                \"en\": \"Wine colour\"\n            },\n            \"description\": {\n                \"de\": \"Die Farbe des Weines.\",\n                \"en\": \"The colour of the wine.\"\n            },\n            \"type\": \"TEXT\",\n            \"metadata\": {\n                \"readOnly\": false,\n                \"localized\": true,\n                \"required\": false,\n                \"nullable\": true\n            }\n        },\n        {\n            \"key\": \"flavor_n11showcase\",\n            \"name\": {\n                \"de\": \"Weingeschmack\",\n                \"en\": \"Wine flavor\"\n            },\n            \"description\": {\n                \"de\": \"Der Geschmacksstil des Weins.\",\n                \"en\": \"The flavor style of the wine.\"\n            },\n            \"type\": \"TEXT\",\n            \"metadata\": {\n                \"readOnly\": false,\n                \"localized\": true,\n                \"required\": false,\n                \"nullable\": true\n            }\n        },\n        {\n            \"key\": \"winestyle_n11showcase\",\n            \"name\": {\n                \"de\": \"Weinstil\",\n                \"en\": \"Wine style\"\n            },\n            \"description\": {\n                \"de\": \"Assoziationen, mit denen der Wein in Verbindung gebracht wird.\",\n                \"en\": \"Associations with which the wine is connected.\"\n            },\n            \"type\": \"TEXT\",\n            \"metadata\": {\n                \"readOnly\": false,\n                \"localized\": true,\n                \"required\": false,\n                \"nullable\": true\n            }\n        },\n        {\n            \"key\": \"tasteslike_n11showcase\",\n            \"name\": {\n                \"de\": \"Wein schmeckt nach\",\n                \"en\": \"Wine tastes like\"\n            },\n            \"description\": {\n                \"de\": \"Vergleichbare Geschmacksnoten, die durch den Wein hervorgerufen werden.\",\n                \"en\": \"Comparable flavours evoked by the wine.\"\n            },\n            \"type\": \"TEXT\",\n            \"metadata\": {\n                \"readOnly\": false,\n                \"localized\": true,\n                \"required\": false,\n                \"nullable\": true\n            }\n        },\n        {\n            \"key\": \"pairswellwith_n11showcase\",\n            \"name\": {\n                \"de\": \"Passt gut zu\",\n                \"en\": \"Pairs well with\"\n            },\n            \"description\": {\n                \"de\": \"Gerichte, mit denen man den Wein gut trinken kann.\",\n                \"en\": \"Dishes that go well with the wine.\"\n            },\n            \"type\": \"TEXT\",\n            \"metadata\": {\n                \"readOnly\": false,\n                \"localized\": true,\n                \"required\": false,\n                \"nullable\": true\n            }\n        },\n        {\n            \"key\": \"alcoholcontent_n11showcase\",\n            \"name\": {\n                \"de\": \"Alkoholgehalt\",\n                \"en\": \"Alcohol content\"\n            },\n            \"description\": {\n                \"de\": \"Der Alkoholgehalt des Weines.\",\n                \"en\": \"The alcohol content of the wine.\"\n            },\n            \"type\": \"TEXT\",\n            \"metadata\": {\n                \"readOnly\": false,\n                \"localized\": false,\n                \"required\": false,\n                \"nullable\": true\n            }\n        },\n        {\n            \"key\": \"residualsugar_n11showcase\",\n            \"name\": {\n                \"de\": \"Restzucker\",\n                \"en\": \"Residual sugar\"\n            },\n            \"description\": {\n                \"de\": \"Der Restzucker, der im Wein enthalten ist.\",\n                \"en\": \"The residual sugar contained in the wine.\"\n            },\n            \"type\": \"TEXT\",\n            \"metadata\": {\n                \"readOnly\": false,\n                \"localized\": false,\n                \"required\": false,\n                \"nullable\": true\n            }\n        },\n        {\n            \"key\": \"acidity_n11showcase\",\n            \"name\": {\n                \"de\": \"Säuregehalt\",\n                \"en\": \"acidity\"\n            },\n            \"description\": {\n                \"de\": \"Der Säuregehalt des Weines.\",\n                \"en\": \"The acidity of the wine.\"\n            },\n            \"type\": \"TEXT\",\n            \"metadata\": {\n                \"readOnly\": false,\n                \"localized\": false,\n                \"required\": false,\n                \"nullable\": true\n            }\n        },\n        {\n            \"key\": \"drinkingtemperature_n11showcase\",\n            \"name\": {\n                \"de\": \"Drinktemperatur\",\n                \"en\": \"Drinking temperature\"\n            },\n            \"description\": {\n                \"de\": \"Die Temperatur zur optimalen Geschmacksentfaltung des Weins.\",\n                \"en\": \"The temperature for optimum flavor development of the wine.\"\n            },\n            \"type\": \"TEXT\",\n            \"metadata\": {\n                \"readOnly\": false,\n                \"localized\": false,\n                \"required\": false,\n                \"nullable\": true\n            }\n        },\n        {\n            \"key\": \"qualitylevel_n11showcase\",\n            \"name\": {\n                \"de\": \"Qualitätsniveau\",\n                \"en\": \"Quality level\"\n            },\n            \"description\": {\n                \"de\": \"Das Qualitätsniveau zur Einstufung des Weins.\",\n                \"en\": \"The quality level for categorising the wine.\"\n            },\n            \"type\": \"TEXT\",\n            \"metadata\": {\n                \"readOnly\": false,\n                \"localized\": false,\n                \"required\": false,\n                \"nullable\": true\n            }\n        },\n        {\n            \"key\": \"maturation_n11showcase\",\n            \"name\": {\n                \"de\": \"Reifungsprozess\",\n                \"en\": \"Maturation\"\n            },\n            \"description\": {\n                \"de\": \"Die Art und Weise, auf der der Wein gereift ist.\",\n                \"en\": \"The way in which the wine has matured.\"\n            },\n            \"type\": \"TEXT\",\n            \"metadata\": {\n                \"readOnly\": false,\n                \"localized\": true,\n                \"required\": false,\n                \"nullable\": true\n            }\n        },\n        {\n            \"key\": \"closuretype_n11showcase\",\n            \"name\": {\n                \"de\": \"Verschlussart\",\n                \"en\": \"Closure type\"\n            },\n            \"description\": {\n                \"de\": \"Die Art, wie der Wein verschlossen ist.\",\n                \"en\": \"The way the wine is sealed.\"\n            },\n            \"type\": \"TEXT\",\n            \"metadata\": {\n                \"readOnly\": false,\n                \"localized\": true,\n                \"required\": false,\n                \"nullable\": true\n            }\n        },\n        {\n            \"key\": \"drinkableuntil_n11showcase\",\n            \"name\": {\n                \"de\": \"Genießbar bis\",\n                \"en\": \"Drinkable until\"\n            },\n            \"description\": {\n                \"de\": \"Das Mindesthaltbarkeitsdatum des Weins.\",\n                \"en\": \"The best before date of the wine.\"\n            },\n            \"type\": \"TEXT\",\n            \"metadata\": {\n                \"readOnly\": false,\n                \"localized\": true,\n                \"required\": false,\n                \"nullable\": true\n            }\n        },\n        {\n            \"key\": \"awards_n11showcase\",\n            \"name\": {\n                \"de\": \"Auszeichnungen\",\n                \"en\": \"Awards\"\n            },\n            \"description\": {\n                \"de\": \"Die Auszeichnungen, die dem Wein verliehen wurden.\",\n                \"en\": \"The awards that have been bestowed on the wine.\"\n            },\n            \"type\": \"TEXT\",\n            \"metadata\": {\n                \"readOnly\": false,\n                \"localized\": true,\n                \"required\": false,\n                \"nullable\": true\n            }\n        }\n    ],\n    \"metadata\": {\n        \"version\": 7\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/schema/{{tenant}}/schemas/:id",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"schema",
+						"{{tenant}}",
+						"schemas",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "custom_product_attributes_n11"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -1,0 +1,24 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "localizedValuesMixin",
+  "type": "object",
+  "description": "Schema for localized properties.",
+  "properties": {
+    "language": {
+      "type": "string",
+      "description": "The language of the provided value."
+    },
+    "value": {
+      "type": [
+        "boolean",
+        "number",
+        "string"
+      ],
+      "description": "Value of the localized field in the specific language."
+    }
+  },
+  "required": [
+    "language",
+    "value"
+  ]
+}
